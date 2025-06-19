@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>TicTacToe</title>
+</head>
+<body>
+    <div id="start-screen">
+        <h2>Starrt Game</h2>
+        <label>
+            Your Name:
+            <input type="text" id="player-name" placeholder="Enter your name" />
+        </label>
+        <label>
+            Choose your mark:
+            <select id="player-mark">
+                <option value="X">X</option>
+                <option value="O">O</option>
+            </select>
+        </label>
+        <button id="start-btn">Start Game</button>
+    </div>
+   <div id="game-screen" style="display: none">
+     <div id="container">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+    <div id="messege" style="margin-top: 20px; font-size: 1.2rem; text-align: center;"></div>
+    <button id="restart-btn" style="display: block; margin: 20px auto;">Restart Game</button>
+    <button id="play-again-btn" style="display: none;">Play Again</button>
+   </div>
+    <script src="script.js"></script>
+</body>
+</html>
