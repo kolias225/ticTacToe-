@@ -36,6 +36,7 @@ const Player = (name, mark) => {
 const GameController = (() => {
     let player1, player2;
     let activePlayer;
+    let gameOver = false;
 
     const switchPlayer = () => {
         activePlayer = (activePlayer === player1) ? player2 : player1;
@@ -58,6 +59,7 @@ const GameController = (() => {
         player1 = Player(name1, mark1);
         player2 = Player(name2, mark2);
         activePlayer = player1;
+        gameOver = false;
     }
 
 
@@ -80,33 +82,48 @@ const GameController = (() => {
 
 
     const playRound = (index) => {
+        if (gameOver) return;
+
+
         const mark = activePlayer.getMark();
         const success = Gameboard.updateCell(index,mark);
         if (!success) return;
 
         const result = checkWinner();
         if(result) {
-            const message = document.getElementById("messege");
-            const playAgainBtn = document.getElementById("play-again-btn");
+            const modal = document.getElementById("result-modal");
+            const resultText = document.getElementById("result-text");
+            const playAgainBtn = document.getElementById("play-again-btn")
             if (result === 'tie') {
-                message.textContent = "Tie!";
+                resultText.textContent = "Tie!";
             } else {
-                message.textContent = `${activePlayer.getName()} win!`
+                resultText.textContent = `${activePlayer.getName()} win!`
             }
 
-            playAgainBtn.style.display = "block";
+            modal.style.display = "flex";
+            gameOver = true;
             return;
         }
 
-
         switchPlayer();
-    }
+
+    };
+
+
+          const resetGame = () => {
+    Gameboard.reset();
+    gameOver = false;
+    activePlayer = player1;
+          };
+
 
     return {
         initPlayers,
         getActivePlayer: () => activePlayer,
-        playRound
+        playRound,
+        resetGame
     };
+
 
     
 })(); 
@@ -163,15 +180,35 @@ const StartScreenController = (() => {
 
     });
 
-    const RstartController = (() => {
-        const restartBtn = document.getElementById("restart-btn");
+    const RestartController = (() => {
+    const restartBtn = document.getElementById("play-again-btn");
+    const modal = document.getElementById("result-modal");
 
-        restartBtn.addEventListener("click", () => {
-            Gameboard.reset();
-            document.getElementById("messege").textContent = "";
-            ScreenController.render()
-        });
-     })();
+    restartBtn.addEventListener("click", () => {
+        Gameboard.reset();
+        GameController.resetGame();
+        ScreenController.render();
+        modal.style.display = "none";
+    });
+
+    const mainMenuBtn = document.getElementById("main-menu-btn");
+    mainMenuBtn.addEventListener("click", () => {
+        Gameboard.reset();
+        GameController.resetGame();
+        ScreenController.render();
+
+        modal.style.display = "none";
+
+        document.getElementById("game-screen").style.display = "none";
+        document.getElementById("start-screen").style.display = "flex";
+    })
+})();
+
+const restartBtn = document.getElementById("restart-btn");
+restartBtn.addEventListener("click", () => {
+    GameController.resetGame();
+    ScreenController.render();
+});
 
 })();
 
